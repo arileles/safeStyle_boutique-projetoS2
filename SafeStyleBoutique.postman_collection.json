@@ -314,7 +314,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"usuarioId\": 4,\r\n  \"produtos\": [\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 2\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}\r\n",
+					"raw": "{\r\n  \"usuarioId\": 123,\r\n  \"valorTotal\": 199.98,\r\n  \"itens\": [\r\n    {\r\n      \"produtoId\": 1,\r\n      \"quantidade\": 1\r\n    },\r\n    {\r\n      \"produtoId\": 2,\r\n      \"quantidade\": 2\r\n    }\r\n  ]\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -372,7 +372,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/carrinho/1",
+					"raw": "http://localhost:8080/carrinho/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -380,7 +380,7 @@
 					"port": "8080",
 					"path": [
 						"carrinho",
-						"1"
+						"2"
 					]
 				}
 			},
