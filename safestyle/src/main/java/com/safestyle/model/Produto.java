@@ -1,12 +1,12 @@
 package com.safestyle.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 
 @Entity
+@Table
 public class Produto {
 
     @Id
@@ -17,6 +17,14 @@ public class Produto {
     private String descricao;
     private Double preco;
     private String imagemUrl;
+
+    @ManyToMany
+    @JoinTable(
+            name = "produtos_id",
+            joinColumns = @JoinColumn(name = "produtos")
+    )
+    private List<Produto>  carrinho;
+
 
     // Getters e Setters
 

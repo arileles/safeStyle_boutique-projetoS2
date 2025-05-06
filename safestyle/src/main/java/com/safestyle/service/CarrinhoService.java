@@ -4,8 +4,10 @@ import com.safestyle.dto.CarrinhoDto;
 import com.safestyle.dto.ItemCarrinhoDto;
 import com.safestyle.model.Carrinho;
 import com.safestyle.model.Produto;
+import com.safestyle.model.Usuario;
 import com.safestyle.repository.CarrinhoRepository;
 import com.safestyle.repository.ProdutoRepository;
+import com.safestyle.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class CarrinhoService {
     private CarrinhoRepository repository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<Carrinho> listarTodos() {
         return repository.findAll();
@@ -39,7 +43,8 @@ public class CarrinhoService {
                 .sum();
 
         carrinho.setProdutos(produtos); // Repetição de produtos, se quiser controlar quantidade, ideal modelar diferente
-        carrinho.setUsuarioId(dto.getUsuarioId());
+        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + dto.getUsuarioId()));
         carrinho.setQuantidade(quantidadeTotal);
         carrinho.setValorTotal(dto.getValorTotal());
 
@@ -52,6 +57,14 @@ public class CarrinhoService {
     }
 
     public void excluirCarrinho(Long id) {
-        repository.deleteById(id);
+        Carrinho carrinho = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Carrinho não encontrado"));
+
+        carrinho.getProdutos().clear();
+        repository.save(carrinho);  // Atualiza para limpar a tabela intermediária
+        repository.delete(carrinho); // Deleta o carrinho
     }
+
+
+
 }

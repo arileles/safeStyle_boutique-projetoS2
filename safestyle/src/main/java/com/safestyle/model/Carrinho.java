@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table
 public class Carrinho {
 
     @Id
@@ -14,12 +15,13 @@ public class Carrinho {
     @ManyToMany
     @JoinTable(
             name = "carrinho_produto",
-            joinColumns = @JoinColumn(name = "carrinho_id"),
-            inverseJoinColumns = @JoinColumn(name = "produto_id")
+            joinColumns = @JoinColumn(name = "carrinho_id")
     )
     private List<Produto> produtos;  // Lista de produtos no carrinho
+    @OneToOne
+    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
+    private Usuario usuario;
 
-    private Long usuarioId;  // ID do usuário dono do carrinho
     private int quantidade;  // Quantidade de itens no carrinho
     private double valorTotal;  // Valor total do carrinho
 
@@ -42,12 +44,12 @@ public class Carrinho {
     }
 
     // Getter e Setter para usuarioId
-    public Long getUsuarioId() {
-        return usuarioId;
+    public Usuario getUsuarioId() {
+        return usuario;
     }
 
     public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
+        this.usuario = usuario;
     }
 
     // Getter e Setter para quantidade
