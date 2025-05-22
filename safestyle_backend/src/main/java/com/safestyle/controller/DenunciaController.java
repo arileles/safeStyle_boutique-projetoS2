@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/denuncias")
+@CrossOrigin(origins = "http://localhost:4200") // permite chamadas do Angular
 public class DenunciaController {
 
     @Autowired

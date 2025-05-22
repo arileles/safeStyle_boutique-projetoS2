@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/carrinho")
+@CrossOrigin(origins = "http://localhost:4200") // permite chamadas do Angular
 public class CarrinhoController {
 
     @Autowired

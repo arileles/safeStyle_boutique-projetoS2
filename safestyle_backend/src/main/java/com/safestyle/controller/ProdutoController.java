@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200") // permite chamadas do Angular
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
