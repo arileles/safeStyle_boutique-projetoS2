@@ -1,0 +1,58 @@
+<div class="home-container">
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Bem-vindo à SafeStyle</h1>
+      <p>Descubra as últimas tendências em moda com preços acessíveis</p>
+      <button class="shop-now-btn">Comprar Agora</button>
+    </div>
+  </section>
+
+  <section class="products-section">
+    <h2>Produtos em Destaque</h2>
+    
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Carregando produtos...</p>
+    </div>
+    
+    <div *ngIf="error" class="error-message">
+      <p>Ocorreu um erro ao carregar os produtos. Por favor, tente novamente mais tarde.</p>
+    </div>
+    
+    <div *ngIf="!loading && !error" class="products-grid">
+      <div *ngFor="let produto of produtos" class="product-card">
+        <div class="product-image">
+          <img [src]="produto.imagemUrl || '/assets/images/placeholder.jpg'" [alt]="produto.nome">
+        </div>
+        <div class="product-info">
+          <h3>{{ produto.nome }}</h3>
+          <p class="product-description">{{ produto.descricao }}</p>
+          <p class="product-price">R$ {{ produto.preco.toFixed(2) }}</p>
+          <button class="add-to-cart-btn" (click)="addToCart(produto)">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="categories-section">
+    <h2>Categorias</h2>
+    <div class="categories-grid">
+      <div class="category-card">
+        <img src="/assets/images/category-women.jpg" alt="Moda Feminina">
+        <h3>Feminino</h3>
+      </div>
+      <div class="category-card">
+        <img src="/assets/images/category-men.jpg" alt="Moda Masculina">
+        <h3>Masculino</h3>
+      </div>
+      <div class="category-card">
+        <img src="/assets/images/category-kids.jpg" alt="Moda Infantil">
+        <h3>Infantil</h3>
+      </div>
+      <div class="category-card">
+        <img src="/assets/images/category-accessories.jpg" alt="Acessórios">
+        <h3>Acessórios</h3>
+      </div>
+    </div>
+  </section>
+</div>

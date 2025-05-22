@@ -1,0 +1,11 @@
+<div class="product-card">
+  <div class="product-image">
+    <img [src]="produto.imagemUrl || '/assets/images/placeholder.jpg'" [alt]="produto.nome">
+  </div>
+  <div class="product-info">
+    <h3>{{ produto.nome }}</h3>
+    <p class="product-description">{{ produto.descricao }}</p>
+    <p class="product-price">R$ {{ produto.preco.toFixed(2) }}</p>
+    <button class="add-to-cart-btn" (click)="onAddToCart()">Adicionar ao Carrinho</button>
+  </div>
+</div>

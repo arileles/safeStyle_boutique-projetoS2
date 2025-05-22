@@ -1,0 +1,15 @@
+<div class="app-container">
+  <app-header></app-header>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <app-footer></app-footer>
+  
+  <app-chatbot></app-chatbot>
+  
+  <app-welcome-modal *ngIf="showWelcomeModal" (close)="closeWelcomeModal()"></app-welcome-modal>
+  
+  <app-location-modal *ngIf="showLocationModal" (close)="closeLocationModal()"></app-location-modal>
+</div>

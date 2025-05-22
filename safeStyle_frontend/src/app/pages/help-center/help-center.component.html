@@ -1,0 +1,75 @@
+<div class="help-center-container">
+  <div class="help-header">
+    <h1>Centro de Ajuda</h1>
+    <p>Encontre recursos e suporte quando você mais precisar</p>
+  </div>
+  
+  <div class="help-content">
+    <section class="emergency-section">
+      <h2>Números de Emergência</h2>
+      <div class="emergency-numbers">
+        <div *ngFor="let emergency of emergencyNumbers" class="emergency-card">
+          <h3>{{ emergency.name }}</h3>
+          <p class="emergency-number">{{ emergency.number }}</p>
+          <a [href]="'tel:' + emergency.number" class="call-button">Ligar Agora</a>
+        </div>
+      </div>
+    </section>
+    
+    <section class="support-centers-section">
+      <h2>Centros de Apoio Próximos</h2>
+      
+      <div *ngIf="!hasLocation" class="location-request">
+        <p>Para ver centros de apoio próximos a você, precisamos da sua localização.</p>
+        <button (click)="requestLocation()" [disabled]="isLoading" class="location-button">
+          <span *ngIf="!isLoading">Compartilhar Localização</span>
+          <span *ngIf="isLoading">Carregando...</span>
+        </button>
+      </div>
+      
+      <div *ngIf="hasLocation && isLoading" class="loading-container">
+        <div class="spinner"></div>
+        <p>Buscando centros de apoio próximos...</p>
+      </div>
+      
+      <div *ngIf="hasLocation && !isLoading && supportCenters.length === 0" class="no-centers">
+        <p>Não encontramos centros de apoio próximos à sua localização.</p>
+      </div>
+      
+      <div *ngIf="hasLocation && !isLoading && supportCenters.length > 0" class="support-centers">
+        <div *ngFor="let center of supportCenters" class="support-center-card">
+          <h3>{{ center.name }}</h3>
+          <p class="center-address">{{ center.address }}</p>
+          <p class="center-distance">{{ center.distance }}</p>
+          <p class="center-phone">{{ center.phone }}</p>
+          <div class="center-actions">
+            <a [href]="'tel:' + center.phone" class="call-button">Ligar</a>
+            <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + center.latitude + ',' + center.longitude" target="_blank" class="directions-button">Como Chegar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="safety-tips-section">
+      <h2>Dicas de Segurança</h2>
+      <div class="safety-tips">
+        <div class="safety-tip">
+          <h3>Planeje com Antecedência</h3>
+          <p>Tenha um plano de segurança pronto caso precise sair rapidamente. Isso pode incluir um local seguro para ir, documentos importantes e algum dinheiro.</p>
+        </div>
+        <div class="safety-tip">
+          <h3>Confie em Seus Instintos</h3>
+          <p>Se você sentir que está em perigo, confie em seus instintos. Sua segurança é a prioridade.</p>
+        </div>
+        <div class="safety-tip">
+          <h3>Mantenha Contato</h3>
+          <p>Mantenha contato regular com pessoas de confiança que possam ajudar em caso de emergência.</p>
+        </div>
+        <div class="safety-tip">
+          <h3>Use Navegação Privada</h3>
+          <p>Ao buscar ajuda online, use o modo de navegação privada para não deixar rastros no histórico do navegador.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

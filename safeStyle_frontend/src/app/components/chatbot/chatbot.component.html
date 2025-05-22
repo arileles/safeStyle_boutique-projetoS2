@@ -1,0 +1,47 @@
+<div class="chatbot-container" [class.open]="isChatOpen">
+  <div class="chat-header" (click)="toggleChat()">
+    <h3>Assistente SafeStyle</h3>
+    <div class="chat-controls">
+      <span *ngIf="unreadMessages > 0" class="unread-badge">{{unreadMessages}}</span>
+      <button class="toggle-button">
+        <span *ngIf="!isChatOpen">↑</span>
+        <span *ngIf="isChatOpen">↓</span>
+      </button>
+    </div>
+  </div>
+  
+  <div class="chat-body" *ngIf="isChatOpen">
+    <div #chatMessages class="chat-messages">
+      <div *ngFor="let message of messages" 
+           class="message" 
+           [ngClass]="{'user-message': message.sender === 'user', 'bot-message': message.sender === 'bot'}">
+        <div class="message-content">
+          <p>{{message.text}}</p>
+          <span class="message-time">{{message.timestamp | date:'shortTime'}}</span>
+        </div>
+        
+        <div *ngIf="message.options && message.options.length > 0" class="message-options">
+          <button *ngFor="let option of message.options" 
+                  class="option-button" 
+                  (click)="selectOption(option)">
+            {{option}}
+          </button>
+          
+          <!-- Special handling for login/register options -->
+          <ng-container *ngIf="message.text.includes('fazer login ou criar uma conta')">
+            <button class="option-button" (click)="navigateToLogin()">Fazer login</button>
+            <button class="option-button" (click)="navigateToRegister()">Criar conta</button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    
+    <div class="chat-input">
+      <input type="text" 
+             placeholder="Digite sua mensagem..." 
+             [(ngModel)]="newMessage" 
+             (keydown)="handleKeyDown($event)">
+      <button (click)="sendMessage()" [disabled]="!newMessage.trim()">Enviar</button>
+    </div>
+  </div>
+</div>

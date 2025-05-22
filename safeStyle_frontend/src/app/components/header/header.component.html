@@ -1,0 +1,31 @@
+<header class="header">
+  <div class="header-container">
+    <div class="logo-container">
+      <a routerLink="/" class="logo">
+        SafeStyle
+      </a>
+      <button class="menu-toggle" (click)="toggleMenu()">
+        <span class="menu-icon"></span>
+      </button>
+    </div>
+    
+    <nav class="nav-menu" [class.open]="isMenuOpen">
+      <ul class="nav-list">
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Início</a></li>
+        <li><a routerLink="/cart" routerLinkActive="active">Carrinho ({{cartItemCount}})</a></li>
+        <ng-container *ngIf="(currentUser$ | async) as user; else notLoggedIn">
+          <li class="user-menu">
+            <a>Olá, {{user.nome}}</a>
+            <div class="dropdown-menu">
+              <a (click)="logout()">Sair</a>
+            </div>
+          </li>
+        </ng-container>
+        <ng-template #notLoggedIn>
+          <li><a routerLink="/login" routerLinkActive="active">Entrar</a></li>
+          <li><a routerLink="/register" routerLinkActive="active">Cadastrar</a></li>
+        </ng-template>
+      </ul>
+    </nav>
+  </div>
+</header>
