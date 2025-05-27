@@ -12,13 +12,17 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors()   // ESSENCIAL - ativa CORS configurado
+                .and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // libera OPTIONS para todas as rotas
-                .requestMatchers("/usuarios/**").permitAll()            // libera rota de usuarios
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/usuarios/**").permitAll()
+                .requestMatchers("/produtos/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
+
         return http.build();
     }
 }

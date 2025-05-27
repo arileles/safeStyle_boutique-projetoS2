@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core"
 import { BrowserModule } from "@angular/platform-browser"
+import { CommonModule } from "@angular/common"
 import { HttpClientModule } from "@angular/common/http"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
@@ -17,9 +18,11 @@ import { CartComponent } from "./pages/cart/cart.component"
 import { LoginComponent } from "./pages/login/login.component"
 import { RegisterComponent } from "./pages/register/register.component"
 import { HelpCenterComponent } from "./pages/help-center/help-center.component"
+import { CategoryComponent } from "./pages/categorys/categorys.component"
 import { ProductListComponent } from "./components/product-list/product-list.component"
 import { ProductCardComponent } from "./components/product-card/product-card.component"
 import { ErrorModalComponent } from "./components/error-modal/error-modal.component"
+import { ProductFilterComponent } from "./components/product-filter/product-filter.component"
 
 @NgModule({
   declarations: [
@@ -34,12 +37,15 @@ import { ErrorModalComponent } from "./components/error-modal/error-modal.compon
     LoginComponent,
     RegisterComponent,
     HelpCenterComponent,
+    CategoryComponent,
     ProductListComponent,
     ProductCardComponent,
     ErrorModalComponent,
+    ProductFilterComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

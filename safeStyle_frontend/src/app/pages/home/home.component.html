@@ -2,8 +2,8 @@
   <section class="hero-section">
     <div class="hero-content">
       <h1>Bem-vindo à SafeStyle</h1>
-      <p>Descubra as últimas tendências em moda com preços acessíveis</p>
-      <button class="shop-now-btn">Comprar Agora</button>
+      <p>Descubra as últimas tendências em moda feminina e acessórios exclusivos</p>
+      <button class="shop-now-btn" (click)="navigateToCategory('feminino')">Comprar Agora</button>
     </div>
   </section>
 
@@ -15,14 +15,18 @@
       <p>Carregando produtos...</p>
     </div>
     
-    <div *ngIf="error" class="error-message">
-      <p>Ocorreu um erro ao carregar os produtos. Por favor, tente novamente mais tarde.</p>
+    <div *ngIf="error && !loading" class="error-message">
+      <p>{{ errorMessage }}</p>
+      <button class="retry-button" (click)="retryLoadProducts()">Tentar Novamente</button>
     </div>
     
-    <div *ngIf="!loading && !error" class="products-grid">
+    <div *ngIf="!loading && produtos.length > 0" class="products-grid">
       <div *ngFor="let produto of produtos" class="product-card">
         <div class="product-image">
-          <img [src]="produto.imagemUrl || '/assets/images/placeholder.jpg'" [alt]="produto.nome">
+          <img [src]="getProductImage(produto)" [alt]="produto.nome" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+          <div class="placeholder-image" style="display:none; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); height: 100%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold; text-align: center; padding: 20px;">
+            {{ produto.nome }}
+          </div>
         </div>
         <div class="product-info">
           <h3>{{ produto.nome }}</h3>
@@ -35,24 +39,30 @@
   </section>
   
   <section class="categories-section">
-    <h2>Categorias</h2>
+    <h2>Nossas Categorias</h2>
     <div class="categories-grid">
-      <div class="category-card">
-        <img src="/assets/images/category-women.jpg" alt="Moda Feminina">
-        <h3>Feminino</h3>
+      <div class="category-card" (click)="navigateToCategory('feminino')">
+        <img src="/assets/moda_feminina.jpg" alt="Moda Feminina" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div style="display:none; background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%); height: 100%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold;">Moda Feminina</div>
+        <h3>Moda Feminina</h3>
+        <p>Descubra peças únicas que realçam sua beleza natural</p>
       </div>
-      <div class="category-card">
-        <img src="/assets/images/category-men.jpg" alt="Moda Masculina">
-        <h3>Masculino</h3>
+      <div class="category-card" (click)="navigateToCategory('acessorios')">
+        <img src="/assets/joias.jpg" alt="Acessórios e Joias" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div style="display:none; background: linear-gradient(135deg, #fff3e0 0%, #ffcc02 100%); height: 100%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold;">Acessórios & Joias</div>
+        <h3>Acessórios & Joias</h3>
+        <p>Complete seu look com nossas joias e acessórios exclusivos</p>
       </div>
-      <div class="category-card">
-        <img src="/assets/images/category-kids.jpg" alt="Moda Infantil">
-        <h3>Infantil</h3>
-      </div>
-      <div class="category-card">
-        <img src="/assets/images/category-accessories.jpg" alt="Acessórios">
-        <h3>Acessórios</h3>
-      </div>
+    </div>
+  </section>
+
+  <!-- Subtle help message -->
+  <section class="trust-section">
+    <div class="trust-content">
+      <h3>Sua Segurança é Nossa Prioridade</h3>
+      <p>Na SafeStyle, acreditamos que toda mulher merece se sentir segura e confiante. 
+         Estamos aqui para apoiar você em todos os momentos da sua jornada.</p>
+      <p class="subtle-help">Se você precisar de qualquer tipo de suporte, nossa equipe está sempre disponível para ajudar.</p>
     </div>
   </section>
 </div>

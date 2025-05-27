@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core"
 import  { HttpClient } from "@angular/common/http"
-import { BehaviorSubject, type Observable, of } from "rxjs"
+import { BehaviorSubject,  Observable, of } from "rxjs"
 import  { Carrinho, ItemCarrinho } from "../models/carrinho.model"
 import  { Produto } from "../models/produto.model"
-import  { ProdutoService } from "./produto.service"
 
 @Injectable({
   providedIn: "root",
@@ -16,10 +15,7 @@ export class CarrinhoService {
   // Local cart for users not logged in
   private localCart: ItemCarrinho[] = []
 
-  constructor(
-    private http: HttpClient,
-    private produtoService: ProdutoService,
-  ) {
+  constructor(private http: HttpClient) {
     // Load cart from localStorage
     const storedCart = localStorage.getItem("localCart")
     if (storedCart) {

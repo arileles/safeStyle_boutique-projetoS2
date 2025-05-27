@@ -1,0 +1,32 @@
+<!-- Loading -->
+<div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Carregando produtos...</p>
+  </div>
+  
+  <!-- Error -->
+  <div *ngIf="!loading && error" class="error-container">
+    <p>Erro ao carregar produtos: {{ errorMessage || 'Erro desconhecido.' }}</p>
+    <button (click)="retryLoadProducts()">Tentar novamente</button>
+  </div>
+  
+  <!-- Nenhum produto -->
+  <div *ngIf="!loading && !error && filteredProdutos.length === 0" class="no-products">
+    <p>Nenhum produto encontrado com os filtros selecionados.</p>
+  </div>
+  
+  <!-- Produtos -->
+  <div *ngIf="!loading && !error && filteredProdutos.length > 0" class="products-grid">
+    <div *ngFor="let produto of filteredProdutos" class="product-card">
+      <div class="product-image">
+        <img [src]="produto.imagemUrl || '/placeholder.svg?height=300&width=250'" [alt]="produto.nome">
+        <button class="favorite-btn">♡</button>
+      </div>
+      <div class="product-info">
+        <h3>{{ produto.nome }}</h3>
+        <p class="product-price">R$ {{ produto.preco.toFixed(2) }}</p>
+        <button class="add-to-cart-btn" (click)="addToCart(produto)">Adicionar ao Carrinho</button>
+      </div>
+    </div>
+  </div>
+  

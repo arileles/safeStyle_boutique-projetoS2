@@ -3,7 +3,7 @@
 }
 
 .hero-section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/assets/images/hero-bg.jpg");
+  background: linear-gradient(rgba(255, 64, 128, 0.484), rgba(255, 64, 128, 0.21)), url("/assets/welcome_bunnies.jpg");
   background-size: cover;
   background-position: center;
   height: 500px;
@@ -23,11 +23,13 @@
 .hero-content h1 {
   font-size: 2.5rem;
   margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .hero-content p {
   font-size: 1.2rem;
   margin-bottom: 25px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .shop-now-btn {
@@ -39,10 +41,13 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .shop-now-btn:hover {
   background-color: #e03b72;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 .products-section,
@@ -92,6 +97,16 @@
   background-color: #ffebee;
   border-radius: 4px;
   margin: 20px 0;
+}
+
+.retry-button {
+  background-color: #ff4081;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
 }
 
 .products-grid {
@@ -174,16 +189,25 @@
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .category-card {
   position: relative;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  height: 150px;
+  height: 250px;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.category-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .category-card img {
@@ -199,14 +223,58 @@
 
 .category-card h3 {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
   left: 0;
   right: 0;
   margin: 0;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0 20px;
   color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.category-card p {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0 20px;
+  color: white;
+  font-size: 0.9rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.trust-section {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+  padding: 60px 20px;
+  margin-top: 60px;
+}
+
+.trust-content {
+  max-width: 800px;
+  margin: 0 auto;
   text-align: center;
+}
+
+.trust-content h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.trust-content p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.subtle-help {
+  font-style: italic;
+  color: #777;
+  font-size: 1rem;
 }
 
 @media (max-width: 768px) {
@@ -222,9 +290,17 @@
     font-size: 1rem;
   }
 
-  .products-grid,
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
   .categories-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .category-card {
+    height: 200px;
   }
 
   .product-image {
@@ -241,8 +317,19 @@
     font-size: 1.5rem;
   }
 
-  .products-grid,
-  .categories-grid {
+  .products-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .trust-section {
+    padding: 40px 15px;
+  }
+
+  .trust-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .trust-content p {
+    font-size: 1rem;
   }
 }

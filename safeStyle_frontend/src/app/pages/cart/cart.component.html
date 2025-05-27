@@ -10,7 +10,7 @@
     <div class="cart-items">
       <div *ngFor="let item of cartItems" class="cart-item">
         <div class="item-image">
-          <img [src]="item.produto?.imagemUrl || '/assets/images/placeholder.jpg'" [alt]="item.produto?.nome">
+          <img [src]="item.produto?.imagemUrl || '/placeholder.svg?height=80&width=80'" [alt]="item.produto?.nome">
         </div>
         <div class="item-details">
           <h3>{{ item.produto?.nome }}</h3>
@@ -58,11 +58,13 @@
   <div *ngIf="showErrorModal" class="modal-overlay">
     <div class="modal-container">
       <div class="modal-header">
-        <h2>Erro no Processamento</h2>
+        <h2>Erro no Processamento do Pagamento</h2>
         <button class="close-button" (click)="closeErrorModal()">×</button>
       </div>
       <div class="modal-content">
         <p>{{ errorMessage }}</p>
+        <p><strong>Código do erro:</strong> PAY_001</p>
+        <p>Por favor, tente novamente em alguns minutos ou entre em contato com nosso suporte técnico.</p>
       </div>
       <div class="modal-footer">
         <button class="primary-button" (click)="closeErrorModal()">Entendi</button>

@@ -1,4 +1,4 @@
-import { Component, type OnInit } from "@angular/core"
+import { Component,  OnInit } from "@angular/core"
 import  { Router } from "@angular/router"
 import  { UsuarioService } from "../../services/usuario.service"
 import  { CarrinhoService } from "../../services/carrinho.service"
@@ -26,7 +26,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.carrinhoService.carrinho$.subscribe((cart) => {
       if (cart) {
-        this.cartItemCount = cart.itens.reduce((total, item) => total + item.quantidade, 0)
+        this.cartItemCount = cart.itens.reduce((total: number, item: any) => total + item.quantidade, 0)
       } else {
         this.cartItemCount = 0
       }
