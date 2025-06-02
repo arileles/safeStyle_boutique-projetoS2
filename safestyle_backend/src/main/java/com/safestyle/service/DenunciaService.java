@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,10 +29,8 @@ public class DenunciaService {
 
     public DenunciaDto enviarDenuncia(DenunciaDto dto) {
         // Aqui você pega o ID do usuário, não o objeto diretamente
-        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         Denuncia denuncia = new Denuncia();
-        denuncia.setUsuario(usuario); // Associar o objeto Usuario à Denuncia
+        denuncia.setUsuario(usuarioRepository.findUsuarioById(1L)); // Associar o objeto Usuario à Denuncia
 
         // Define a data de criação com a hora atual no fuso horário do Brasil (GMT-3)
         ZonedDateTime dataCriacaoBrasilia = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo"));
@@ -50,19 +49,15 @@ public class DenunciaService {
     }
 
     public List<DenunciaDto> listarPorUsuario(Long usuarioId) {
-        // Buscando o usuário pelo ID
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
         // Buscando as denúncias para o usuário
-        return denunciaRepository.findByUsuario(usuario)
+        return denunciaRepository.findByUsuario(1L)
                 .stream()
                 .map(d -> {
                     DenunciaDto dto = new DenunciaDto();
                     dto.setDescricao(d.getDescricao());
                     dto.setData(d.getData());
                     dto.setHora(d.getHora());
-                    dto.setUsuarioId(usuario.getId()); // Passando o ID do usuário, não o objeto
+                    dto.setUsuarioId(1L); // Passando o ID do usuário, não o objeto
                     dto.setDataCriacao(d.getDataCriacao()); // Atribuindo a dataCriacao ao DTO
                     return dto;
                 })

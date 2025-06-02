@@ -65,5 +65,6 @@ public class Produto {
     }
 
     public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
     }
 }

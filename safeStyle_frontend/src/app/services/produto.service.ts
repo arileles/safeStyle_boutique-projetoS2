@@ -24,17 +24,6 @@ export class ProdutoService {
     )
   }
 
-  listarPorCategoria(categoria: string): Observable<Produto[]> {
-    return this.http.get<Produto[]>(`${this.apiUrl}/categoria/${categoria}`).pipe(
-      timeout(this.REQUEST_TIMEOUT),
-      catchError((error) => {
-        console.warn("API not available, using mock data for category:", categoria, error)
-        // Return category-specific mock data
-        return of(this.getMockProdutosByCategory(categoria))
-      }),
-    )
-  }
-
   buscarPorId(id: number): Observable<Produto> {
     return this.http.get<Produto>(`${this.apiUrl}/${id}`).pipe(
       timeout(this.REQUEST_TIMEOUT),

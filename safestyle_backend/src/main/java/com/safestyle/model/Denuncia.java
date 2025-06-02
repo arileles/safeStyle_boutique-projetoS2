@@ -1,11 +1,11 @@
 package com.safestyle.model;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Entity
 @Table
@@ -28,7 +28,7 @@ public class Denuncia {
     }
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
 
     // Getters e Setters

@@ -25,12 +25,13 @@ export class ChatbotService {
     detalhes: "",
   }
 
+  private modoDenunciaAtivo: boolean = false
+
   constructor(
     private denunciaService: DenunciaService,
     private usuarioService: UsuarioService,
   ) {}
 
-  // Initialize the chatbot with a welcome message
   initChat(): void {
     const initialMessages: ChatMessage[] = [
       {
@@ -49,9 +50,7 @@ export class ChatbotService {
     this.currentState = "initial"
   }
 
-  // Send a message from the user to the chatbot
   sendMessage(text: string): void {
-    // Add user message to the chat
     const currentMessages = this.messagesSubject.value
     const userMessage: ChatMessage = {
       sender: "user",
@@ -62,17 +61,21 @@ export class ChatbotService {
     const updatedMessages = [...currentMessages, userMessage]
     this.messagesSubject.next(updatedMessages)
 
-    // Process the message and generate a response
+    // 🚨 Se o modo denúncia automático está ativo, enviar denúncia diretamente
+    if (this.modoDenunciaAtivo) {
+      this.modoDenunciaAtivo = false
+      this.enviarDenunciaAutomatica(text)
+      return
+    }
+
     setTimeout(() => {
       this.processMessage(text)
     }, 500)
   }
 
-  // Process the user's message and determine the appropriate response
   private processMessage(text: string): void {
     let response: ChatMessage
 
-    // Check for help keywords in any state
     const helpKeywords = ["ajuda", "urgente", "emergência", "socorro", "perigo", "abuso", "violência"]
     const isHelpRequest = helpKeywords.some((keyword) => text.toLowerCase().includes(keyword))
 
@@ -85,7 +88,6 @@ export class ChatbotService {
         options: ["Sim, posso falar agora", "Não, preciso ser discreto"],
       }
     } else {
-      // Handle based on current state
       switch (this.currentState) {
         case "initial":
           if (text.toLowerCase().includes("ajuda urgente") || text.toLowerCase().includes("preciso de ajuda urgente")) {
@@ -131,6 +133,8 @@ export class ChatbotService {
             text: "Obrigado por compartilhar isso. Suas informações são confidenciais e estão seguras. Você gostaria de fornecer mais detalhes sobre quando isso aconteceu?",
             timestamp: new Date(),
           }
+          // Ativa o modo denúncia automática
+          this.modoDenunciaAtivo = true
           break
 
         case "details":
@@ -146,7 +150,6 @@ export class ChatbotService {
 
         case "confirmation":
           if (text.toLowerCase().includes("sim")) {
-            // Check if user is logged in
             if (this.usuarioService.isLoggedIn()) {
               this.submitReport()
               response = {
@@ -198,30 +201,70 @@ export class ChatbotService {
       }
     }
 
-    // Add bot response to the chat
     const currentMessages = this.messagesSubject.value
     const updatedMessages = [...currentMessages, response]
     this.messagesSubject.next(updatedMessages)
   }
 
-  // Submit the report to the backend
-  private submitReport(): void {
+  private enviarDenunciaAutomatica(descricao: string): void {
     const currentUser = this.usuarioService.currentUserValue
 
     if (currentUser) {
       const today = new Date()
-      const formattedDate = today.toISOString().split("T")[0] // YYYY-MM-DD
-      const formattedTime = today.toTimeString().split(" ")[0] // HH:MM:SS
+      const formattedDate = today.toISOString().split("T")[0]
+      const formattedTime = today.toTimeString().split(" ")[0]
 
       const denuncia: Denuncia = {
-        descricao: `${this.reportData.descricao} - ${this.reportData.detalhes}`,
+        descricao: descricao,
         data: formattedDate,
         hora: formattedTime,
         usuarioId: currentUser.id!,
       }
 
       this.denunciaService.enviarDenuncia(denuncia).subscribe({
-        next: (response) => {
+        next: () => {
+          console.log("Denúncia automática enviada com sucesso")
+          this.adicionarMensagemBot("Sua denúncia foi registrada com segurança. Se precisar de mais ajuda, estarei por aqui.")
+        },
+        error: (error) => {
+          console.error("Erro ao enviar denúncia automática", error)
+          this.adicionarMensagemBot("Houve um problema ao registrar sua denúncia. Por favor, tente novamente mais tarde.")
+        },
+      })
+    } else {
+      this.adicionarMensagemBot("Para registrar sua denúncia, por favor, faça login.")
+    }
+  }
+
+  private adicionarMensagemBot(texto: string): void {
+    const botMessage: ChatMessage = {
+      sender: "bot",
+      text: texto,
+      timestamp: new Date(),
+    }
+
+    const currentMessages = this.messagesSubject.value
+    const updatedMessages = [...currentMessages, botMessage]
+    this.messagesSubject.next(updatedMessages)
+  }
+
+  private submitReport(): void {
+    const currentUser = this.usuarioService.currentUserValue
+
+    if (currentUser) {
+      const today = new Date()
+      const formattedDate = today.toISOString().split("T")[0]
+      const formattedTime = today.toTimeString().split(" ")[0]
+
+      const denuncia: Denuncia = {
+        descricao: this.reportData.descricao,
+        data: formattedDate,
+        hora: formattedTime,
+        usuarioId: currentUser.id!,
+      }
+
+      this.denunciaService.enviarDenuncia(denuncia).subscribe({
+        next: () => {
           console.log("Report submitted successfully")
         },
         error: (error) => {
@@ -231,7 +274,6 @@ export class ChatbotService {
     }
   }
 
-  // Clear the chat history
   clearChat(): void {
     this.messagesSubject.next([])
     this.initChat()

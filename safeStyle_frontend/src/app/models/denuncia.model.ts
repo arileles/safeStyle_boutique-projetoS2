@@ -3,6 +3,6 @@ export interface Denuncia {
   descricao: string
   data: string // LocalDate in ISO format
   hora: string // LocalTime in ISO format
-  usuarioId: number
+  usuarioId?: number
   dataCriacao?: string // LocalDateTime in ISO format
 }

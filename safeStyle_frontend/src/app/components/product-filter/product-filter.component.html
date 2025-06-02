@@ -1,80 +1,105 @@
 <div class="filter-container">
-    <!-- Products Filter -->
-    <div class="filter-section">
-      <h3>Categorias</h3>
-      <div class="filter-options">
-        <div *ngFor="let category of productCategories" class="filter-option">
-          <input 
-            type="checkbox" 
-            [id]="category.id"
-            [(ngModel)]="category.checked"
-            (change)="onFilterChange()"
-          >
-          <label [for]="category.id">{{ category.label }}</label>
-        </div>
+  <!-- Products Section -->
+  <div class="filter-section">
+    <h3>Produtos</h3>
+    <div class="filter-options">
+      <div *ngFor="let product of productTypes" class="filter-option">
+        <input 
+          type="checkbox" 
+          [id]="product.id"
+          [(ngModel)]="product.checked"
+          (change)="onProductTypeChange()"
+        >
+        <label [for]="product.id">{{ product.label }}</label>
       </div>
     </div>
-  
-    <!-- Sizes Filter -->
-    <div class="filter-section" *ngIf="categoryType === 'feminino'">
-      <h3>Tamanhos</h3>
-      <div class="filter-options">
-        <div *ngFor="let size of sizes" class="filter-option">
-          <input 
-            type="checkbox" 
-            [id]="size.id"
-            [(ngModel)]="size.checked"
-            (change)="onFilterChange()"
-          >
-          <label [for]="size.id">{{ size.label }}</label>
-        </div>
+    <button class="show-all-btn" (click)="showAllProducts()">Mostrar tudo</button>
+  </div>
+
+  <!-- Sizes Section -->
+  <div class="filter-section">
+    <h3>Tamanhos</h3>
+    <div class="filter-options">
+      <div *ngFor="let size of sizes" class="filter-option">
+        <input 
+          type="checkbox" 
+          [id]="size.id"
+          [(ngModel)]="size.checked"
+          (change)="onSizeChange()"
+        >
+        <label [for]="size.id">{{ size.label }}</label>
       </div>
     </div>
-  
-    <!-- Price Filter -->
-    <div class="filter-section">
-      <h3>Preço</h3>
-      <div class="price-range">
-        <div class="price-inputs">
-          <input 
-            type="number" 
-            [(ngModel)]="minPrice"
-            (change)="onFilterChange()"
-            placeholder="Min"
-            class="price-input"
-          >
-          <span>até</span>
-          <input 
-            type="number" 
-            [(ngModel)]="maxPrice"
-            (change)="onFilterChange()"
-            placeholder="Max"
-            class="price-input"
-          >
-        </div>
-      </div>
-    </div>
-  
-    <!-- Colors Filter -->
-    <div class="filter-section">
-      <h3>Cores</h3>
-      <div class="color-options">
-        <div *ngFor="let color of colors" class="color-option">
-          <input 
-            type="checkbox" 
-            [id]="'color-' + color.name"
-            [(ngModel)]="color.checked"
-            (change)="onFilterChange()"
-            class="color-checkbox"
-          >
-          <label 
-            [for]="'color-' + color.name" 
-            class="color-swatch"
-            [style.background-color]="color.value"
-            [title]="color.name"
-          ></label>
-        </div>
+    <button class="show-all-btn" (click)="showAllSizes()">Mostrar tudo</button>
+  </div>
+
+
+  <!-- Ratings Section -->
+  <div class="filter-section">
+    <h3>Avaliações</h3>
+    <div class="filter-options">
+      <div *ngFor="let rating of ratings" class="filter-option rating-option">
+        <input 
+          type="checkbox" 
+          [id]="'rating-' + rating.stars"
+          [(ngModel)]="rating.checked"
+          (change)="onRatingChange()"
+        >
+        <label [for]="'rating-' + rating.stars" class="rating-label">
+          <span *ngFor="let star of getStarArray(rating.stars)" class="star filled">★</span>
+          <span *ngFor="let star of getEmptyStarArray(rating.stars)" class="star">★</span>
+        </label>
       </div>
     </div>
   </div>
-  
+
+  <!-- Price Section -->
+  <div class="filter-section">
+    <h3>Preço</h3>
+    <div class="price-range">
+      <div class="price-inputs">
+        <span class="price-label">R$</span>
+        <input 
+          type="number" 
+          [(ngModel)]="minPrice"
+          (change)="onPriceChange()"
+          placeholder="0"
+          class="price-input"
+          min="0"
+        >
+        <span class="price-separator">a</span>
+        <span class="price-label">R$</span>
+        <input 
+          type="number" 
+          [(ngModel)]="maxPrice"
+          (change)="onPriceChange()"
+          placeholder="1000"
+          class="price-input"
+          min="0"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Colors Section -->
+  <div class="filter-section">
+    <h3>Cores</h3>
+    <div class="color-options">
+      <div *ngFor="let color of colors" class="color-option">
+        <input 
+          type="checkbox" 
+          [id]="'color-' + color.name"
+          [(ngModel)]="color.checked"
+          (change)="onColorChange()"
+          class="color-checkbox"
+        >
+        <label 
+          [for]="'color-' + color.name" 
+          class="color-swatch"
+          [style.background-color]="color.value"
+          [title]="color.name"
+        ></label>
+      </div>
+    </div>
+  </div>
+</div>

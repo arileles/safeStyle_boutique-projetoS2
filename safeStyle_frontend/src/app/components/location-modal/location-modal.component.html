@@ -1,17 +1,18 @@
-<div class="modal-overlay">
+<!-- Mostrar modal só se isVisible for true -->
+<div *ngIf="isVisible" class="modal-overlay">
   <div class="modal-container">
     <div class="modal-header">
       <h2>Compartilhar Localização</h2>
       <button class="close-button" (click)="denyLocation()">×</button>
     </div>
     <div class="modal-content">
-      <p>Para melhorar sua experiência de compra, gostaríamos de acessar sua localização para mostrar lojas próximas e opções de entrega.</p>
-      <p class="subtle-message">Sua localização também nos ajuda a fornecer informações sobre centros de suporte e serviços em sua região.</p>
-      
+      <p>Para melhorar sua experiência, gostaríamos de acessar sua localização para mostrar centros de ajuda para mulheres mais próximos.</p>
+      <p class="subtle-message">Sua localização nos ajuda a fornecer informações sobre serviços de suporte em sua região.</p>
+
       <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
-      
+
       <div *ngIf="isLoading" class="loading-spinner">
         <div class="spinner"></div>
         <p>Solicitando acesso à localização...</p>

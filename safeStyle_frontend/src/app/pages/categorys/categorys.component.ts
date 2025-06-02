@@ -1,9 +1,9 @@
-import { Component,  OnInit } from "@angular/core"
-import { ActivatedRoute } from "@angular/router"
-import { ProdutoService } from "../../services/produto.service"
-import { CarrinhoService } from "../../services/carrinho.service"
-import { Produto } from "../../models/produto.model"
-import { ProductFilter } from "../../components/product-filter/product-filter.component"
+import { Component, type OnInit } from "@angular/core"
+import  { ActivatedRoute } from "@angular/router"
+import  { ProdutoService } from "../../services/produto.service"
+import  { CarrinhoService } from "../../services/carrinho.service"
+import  { Produto } from "../../models/produto.model"
+import  { ProductFilter } from "../../components/product-filter/product-filter.component"
 
 export interface CategoryBanner {
   title: string
@@ -34,15 +34,6 @@ export class CategoryComponent implements OnInit {
   error = false
   errorMessage = ""
 
-  filters: ProductFilter = {
-    categories: [],
-    sizes: [],
-    colors: [],
-    priceRange: { min: 0, max: 1000 },
-    ratings: [],
-    inStock: false,
-  }
-
   constructor(
     private route: ActivatedRoute,
     private produtoService: ProdutoService,
@@ -51,7 +42,7 @@ export class CategoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.categoryType = params["type"]
+      this.categoryType = params["type"] || ""
       this.setCategoryInfo()
       this.loadProdutos()
     })
@@ -76,7 +67,7 @@ export class CategoryComponent implements OnInit {
     this.categoryBanner = categoryInfo[this.categoryType] || {
       title: "Produtos",
       subtitle: "Encontre o que você procura",
-      backgroundImage: "",
+      backgroundImage: "/assets/moda_feminina.jpg",
       backgroundColor: "linear-gradient(135deg, #fce4ec 0%, #f8bbd9 50%, #e1bee7 100%)",
     }
     this.categoryTitle = this.categoryBanner.title
@@ -87,35 +78,31 @@ export class CategoryComponent implements OnInit {
     this.error = false
     this.errorMessage = ""
 
-    this.produtoService.listarPorCategoria(this.categoryType).subscribe({
-      next: (produtos) => {
-        this.produtos = produtos;
-        this.filteredProdutos = produtos;
-        this.loading = false;
+    this.produtoService.listarTodos().subscribe({
+      next: (data) => {
+        this.produtos = data || []
+        this.filteredProdutos = [...this.produtos]
+        this.loading = false
+
+        if (this.produtos.length === 0) {
+          this.errorMessage = "Nenhum produto encontrado."
+        }
       },
-      error: (err) => {
-        console.error('Erro ao carregar produtos:', err);
-        this.loading = false;  // ESSENCIAL
-        this.error = true;
-      }
-    });
-    
+      error: (error) => {
+        console.error("Error loading products:", error)
+        this.loading = false
+        this.error = true
+        this.errorMessage = "Não foi possível carregar os produtos."
+
+        // Fallback to mock data
+        this.produtos = this.produtoService.getMockProdutos()
+        this.filteredProdutos = [...this.produtos]
+      },
+    })
   }
 
   onFiltersChange(filters: ProductFilter): void {
-    this.filters = filters
-    this.applyFilters()
-  }
-
-  onSearchChange(): void {
-    this.applyFilters()
-  }
-
-  onSortChange(): void {
-    this.sortProducts()
-  }
-
-  applyFilters(): void {
+    // Apply filters to products
     this.filteredProdutos = this.produtos.filter((produto) => {
       // Search filter
       if (this.searchTerm && !produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase())) {
@@ -123,13 +110,27 @@ export class CategoryComponent implements OnInit {
       }
 
       // Price filter
-      if (produto.preco < this.filters.priceRange.min || produto.preco > this.filters.priceRange.max) {
+      if (produto.preco < filters.priceRange.min || produto.preco > filters.priceRange.max) {
         return false
       }
 
       return true
     })
 
+    this.sortProducts()
+  }
+
+  onSearchChange(): void {
+    this.filteredProdutos = this.produtos.filter((produto) => {
+      if (this.searchTerm && !produto.nome.toLowerCase().includes(this.searchTerm.toLowerCase())) {
+        return false
+      }
+      return true
+    })
+    this.sortProducts()
+  }
+
+  onSortChange(): void {
     this.sortProducts()
   }
 
@@ -145,7 +146,6 @@ export class CategoryComponent implements OnInit {
         this.filteredProdutos.sort((a, b) => a.nome.localeCompare(b.nome))
         break
       default:
-        // relevance - keep original order
         break
     }
   }
@@ -156,5 +156,25 @@ export class CategoryComponent implements OnInit {
 
   retryLoadProducts(): void {
     this.loadProdutos()
+  }
+
+  getProductImage(produto: Produto): string {
+    if (produto.imagemUrl && !produto.imagemUrl.includes("placeholder.svg")) {
+      return produto.imagemUrl
+    }
+
+    const productName = produto.nome.toLowerCase()
+    if (
+      productName.includes("colar") ||
+      productName.includes("brinco") ||
+      productName.includes("pulseira") ||
+      productName.includes("anel") ||
+      productName.includes("relógio") ||
+      productName.includes("bolsa")
+    ) {
+      return "/assets/joias.jpg"
+    } else {
+      return "/assets/moda_feminina.jpg"
+    }
   }
 }

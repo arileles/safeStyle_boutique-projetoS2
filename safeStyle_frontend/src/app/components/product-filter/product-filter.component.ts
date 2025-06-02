@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter, type OnInit } from "@angular/core"
 
 export interface ProductFilter {
-  categories: string[]
+  products: string[]
   sizes: string[]
-  colors: string[]
-  priceRange: { min: number; max: number }
-  ratings: number[]
+  delivery: string
   inStock: boolean
+  ratings: number[]
+  priceRange: { min: number; max: number }
+  colors: string[]
 }
 
 @Component({
@@ -18,51 +19,36 @@ export class ProductFilterComponent implements OnInit {
   @Input() categoryType = ""
   @Output() filtersChange = new EventEmitter<ProductFilter>()
 
-  filters: ProductFilter = {
-    categories: [],
-    sizes: [],
-    colors: [],
-    priceRange: { min: 0, max: 1000 },
-    ratings: [],
-    inStock: false,
-  }
-
-  // Dynamic product categories based on category type
-  get productCategories() {
-    const categories: { [key: string]: any[] } = {
-      feminino: [
-        { id: "all", label: "Todos", checked: true },
-        { id: "vestidos", label: "Vestidos", checked: false },
-        { id: "blusas", label: "Blusas", checked: false },
-        { id: "saias", label: "Saias", checked: false },
-        { id: "calcas", label: "Calças", checked: false },
-      ],
-      acessorios: [
-        { id: "all", label: "Todos", checked: true },
-        { id: "colares", label: "Colares", checked: false },
-        { id: "brincos", label: "Brincos", checked: false },
-        { id: "pulseiras", label: "Pulseiras", checked: false },
-        { id: "aneis", label: "Anéis", checked: false },
-      ],
-    }
-
-    return categories[this.categoryType] || categories["feminino"]
-  }
-
-  sizes = [
-    { id: "xs", label: "X-Small", checked: false },
-    { id: "s", label: "Small", checked: false },
-    { id: "m", label: "Medium", checked: false },
-    { id: "l", label: "Large", checked: false },
-    { id: "xl", label: "X-Large", checked: false },
+  // Products filter
+  productTypes = [
+    { id: "all", label: "All", checked: true },
+    { id: "blouses", label: "Blouses", checked: false },
+    { id: "crop-top", label: "Crop Top", checked: false },
+    { id: "t-shirts", label: "T-Shirts", checked: true },
+    { id: "skirts", label: "Skirts", checked: true },
   ]
 
+  // Sizes filter
+  sizes = [
+    { id: "xs", label: "PP", checked: false },
+    { id: "s", label: "P", checked: false },
+    { id: "m", label: "M", checked: false },
+    { id: "l", label: "G", checked: false },
+    { id: "xl", label: "GG", checked: false },
+  ]
+
+  // Delivery options
   deliveryOptions = [
     { id: "same-day", label: "Mesmo dia", checked: false },
     { id: "next-day", label: "Próximo dia", checked: true },
     { id: "2-5-days", label: "2-5 Dias úteis", checked: false },
   ]
+  selectedDelivery = "next-day"
 
+  // Inventory
+  onlyInStock = true
+
+  // Ratings
   ratings = [
     { stars: 5, checked: true },
     { stars: 4, checked: true },
@@ -71,46 +57,78 @@ export class ProductFilterComponent implements OnInit {
     { stars: 1, checked: false },
   ]
 
-  // Dynamic colors based on category
-  get colors() {
-    const colorsByCategory: { [key: string]: any[] } = {
-      feminino: [
-        { name: "Pink", value: "#ff69b4", checked: true },
-        { name: "Purple", value: "#9c27b0", checked: false },
-        { name: "Rose", value: "#f48fb1", checked: true },
-        { name: "White", value: "#ffffff", checked: false },
-        { name: "Black", value: "#000000", checked: false },
-      ],
-      acessorios: [
-        { name: "Gold", value: "#ffd700", checked: true },
-        { name: "Silver", value: "#c0c0c0", checked: true },
-        { name: "Rose Gold", value: "#e8b4a0", checked: false },
-        { name: "Black", value: "#000000", checked: false },
-      ],
-    }
-
-    return colorsByCategory[this.categoryType] || colorsByCategory["feminino"]
-  }
-
-  inStockOnly = true
+  // Price range
   minPrice = 0
   maxPrice = 1000
 
+  // Colors
+  colors = [
+    { name: "Pink", value: "#ff69b4", checked: true },
+    { name: "Blue", value: "#4169e1", checked: true },
+    { name: "Purple", value: "#9370db", checked: false },
+    { name: "Red", value: "#dc143c", checked: false },
+    { name: "Light Pink", value: "#ffb6c1", checked: false },
+    { name: "Green", value: "#32cd32", checked: true },
+    { name: "Yellow", value: "#ffd700", checked: false },
+    { name: "Orange", value: "#ff8c00", checked: true },
+    { name: "Teal", value: "#008080", checked: false },
+    { name: "Navy", value: "#000080", checked: false },
+    { name: "Lime", value: "#00ff00", checked: false },
+    { name: "Maroon", value: "#800000", checked: false },
+  ]
+
   ngOnInit(): void {
-    this.onFilterChange()
+    this.emitFilters()
   }
 
-  onFilterChange(): void {
-    this.filters = {
-      categories: this.productCategories.filter((c) => c.checked).map((c) => c.id),
+  onProductTypeChange(): void {
+    this.emitFilters()
+  }
+
+  onSizeChange(): void {
+    this.emitFilters()
+  }
+
+  onDeliveryChange(): void {
+    this.emitFilters()
+  }
+
+  onStockChange(): void {
+    this.emitFilters()
+  }
+
+  onRatingChange(): void {
+    this.emitFilters()
+  }
+
+  onPriceChange(): void {
+    this.emitFilters()
+  }
+
+  onColorChange(): void {
+    this.emitFilters()
+  }
+
+  showAllProducts(): void {
+    // Implementation for "Show all" functionality
+  }
+
+  showAllSizes(): void {
+    // Implementation for "Show all" functionality
+  }
+
+  private emitFilters(): void {
+    const filters: ProductFilter = {
+      products: this.productTypes.filter((p) => p.checked).map((p) => p.id),
       sizes: this.sizes.filter((s) => s.checked).map((s) => s.id),
-      colors: this.colors.filter((c) => c.checked).map((c) => c.value),
-      priceRange: { min: this.minPrice, max: this.maxPrice },
+      delivery: this.selectedDelivery,
+      inStock: this.onlyInStock,
       ratings: this.ratings.filter((r) => r.checked).map((r) => r.stars),
-      inStock: this.inStockOnly,
+      priceRange: { min: this.minPrice, max: this.maxPrice },
+      colors: this.colors.filter((c) => c.checked).map((c) => c.value),
     }
 
-    this.filtersChange.emit(this.filters)
+    this.filtersChange.emit(filters)
   }
 
   getStarArray(count: number): number[] {

@@ -40,11 +40,22 @@
         <div *ngFor="let center of supportCenters" class="support-center-card">
           <h3>{{ center.name }}</h3>
           <p class="center-address">{{ center.address }}</p>
-          <p class="center-distance">{{ center.distance }}</p>
-          <p class="center-phone">{{ center.phone }}</p>
+
+          <!-- Removidos pois não existem ainda -->
+          <!-- <p class="center-distance">{{ center.distance }}</p> -->
+          <!-- <p class="center-phone">{{ center.phone }}</p> -->
+
           <div class="center-actions">
-            <a [href]="'tel:' + center.phone" class="call-button">Ligar</a>
-            <a [href]="'https://www.google.com/maps/dir/?api=1&destination=' + center.latitude + ',' + center.longitude" target="_blank" class="directions-button">Como Chegar</a>
+            <!-- Removido botão ligar pois não temos phone -->
+            <!-- <a [href]="'tel:' + center.phone" class="call-button">Ligar</a> -->
+
+            <a
+              [href]="'https://www.google.com/maps/dir/?api=1&destination=' + center.location.lat + ',' + center.location.lng"
+              target="_blank"
+              class="directions-button"
+            >
+              Como Chegar
+            </a>
           </div>
         </div>
       </div>

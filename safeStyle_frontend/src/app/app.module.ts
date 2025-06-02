@@ -5,6 +5,7 @@ import { HttpClientModule } from "@angular/common/http"
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { RouterModule } from "@angular/router"
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppRoutingModule } from "./app-routing.module"
 import { AppComponent } from "./app.component"
@@ -55,5 +56,6 @@ import { ProductFilterComponent } from "./components/product-filter/product-filt
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })
 export class AppModule {}
